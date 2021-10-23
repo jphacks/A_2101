@@ -17,8 +17,6 @@ jobs:
         run: npm run build
       - name: Install firebase
         run: npm install -g firebase-tools
-      - name: select firebase project
-        run: firebase use mathmatch --token ${{ secrets.FIREBASE_TOKEN }}
       - name: deploy to Firebase Hosting
         run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
     
