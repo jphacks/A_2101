@@ -5,21 +5,11 @@
 
   <div id="scroll">
     <table id="chat" align="center">
+      <tbody v-for="chat in AllChat" v-bind:key="chat.datetime">
       <tr>
-        <td></td><td class="me">こんにちは</td>
-      </tr>
-      <tr>
-        <td></td><td class="me">質問があります</td>
-      </tr>
-      <tr>
-        <td class="you">はい、どうぞ</td><td></td>
-      </tr>
-      <tr>
-        <td></td><td class="me">(2)の問題でXXXの公式を使っていますが、その理由がよく分かりません。ご教授いただければ幸いです。</td>
-      </tr>
-      <tr>
-        <td class="you">質問ありがとうございます。XXXの公式は...</td><td></td>
-      </tr>
+        <span v-if="chat.from=='tanaka@塾講師'"><td class="you">{{ chat.contents }}</td><td></td></span>
+        <span v-if="chat.from=='花子'"><td></td><td class="me">{{ chat.contents }}</td></span></tr>
+      </tbody>
     </table>
   </div>
 
@@ -37,8 +27,38 @@
 </template>
 
 <script>
+import firebase from '../firebase'
+
 export default {
-  name: "ChatPage"
+  name: "ChatPage",
+
+  data(){
+    return{
+      AllChat: [],
+    }
+  },
+
+  async mounted(){
+    this.AllChat = []
+
+    // firebaseからチャットデータを取得
+    // 日付順にソート
+    await firebase.firestore()
+        .collection('messages').orderBy("datetime")
+        .get(
+    ).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        this.AllChat.push(doc.data())
+      });
+    }).catch((error) => {
+      console.log(error);
+      this.AllChat = [];
+    });
+
+    // 一番下までスクロール
+    let el = document.getElementById('scroll');
+    el.scrollTo(0,el.scrollHeight)
+  },
 }
 </script>
 
