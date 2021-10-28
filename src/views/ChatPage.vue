@@ -1,11 +1,8 @@
 <template>
   <h1>チャット</h1>
-  <!-- 戻るボタン -->
+
   <input type="button" id="back" value="戻る"/><br><br>
 
-  <!-- チャットボックス -->
-  <!-- 2行のテーブルで作ってみました -->
-  <!-- 1行目:相手のチャット　2行目:自分のチャット -->
   <div id="scroll">
     <table id="chat" align="center">
       <tr>
@@ -26,8 +23,6 @@
     </table>
   </div>
 
-  <!-- チャットする人の名前 -->
-  <!-- 1行目:相手の名前　2行目:自分の名前 -->
   <table id="namespace" align="center">
     <tr>
       <th>tanaka@塾講師</th><th>花子</th>
@@ -35,7 +30,6 @@
   </table>
   <br><br>
 
-  <!-- コメント入力フォーム -->
   <form>
     <textarea v-model="message" placeholder="ここにコメントを入力"></textarea><br>
     <input type="submit" value="コメントを送信">
