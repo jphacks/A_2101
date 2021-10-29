@@ -34,7 +34,7 @@ import Button from '../components/parts/Button.vue';
 
 export default defineComponent({
   name: 'DetailPage',
-  components: { Container },
+  components: { Container, Button },
   setup() {
     const question = ref({
       id: 1,
