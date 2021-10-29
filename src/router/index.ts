@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'PostQuestion',
     component: () => import('../views/PostQuestionPage.vue'),
   },
+  {
+    path: '/list',
+    name: 'QuestionList',
+    component: () => import('../views/QuestionList.vue'),
+  },
 ];
 
 const router = createRouter({
