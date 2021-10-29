@@ -26,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'QuestionList',
     component: () => import('../views/QuestionList.vue'),
   },
+  {
+    path: '/mypage',
+    name: 'MyPage',
+    component: () => import('../views/MyPage.vue'),
+  },
 ];
 
 const router = createRouter({
