@@ -1,30 +1,67 @@
 <template>
-  <h4>分野</h4>
-  <select v-model="selectedItem">
-    <option v-for="item in selectItems" :value="item" :key="item.id">
-      {{ item.label }}
-    </option>
-  </select>
-  <h4>テキスト名</h4>
-  <input type="text" v-model="textbookName" placeholder="例: 楽しい数学演習" />
+  <Container>
+    <div class="section">
+      <div class="title">分野</div>
+      <select class="input-item" v-model="selectedItem">
+        <option v-for="item in selectItems" :value="item" :key="item.id">
+          {{ item.label }}
+        </option>
+      </select>
+    </div>
+    <div class="section">
+      <div class="title">テキスト名</div>
+      <input
+        class="input-item"
+        type="text"
+        v-model="textbookName"
+        placeholder="例: 楽しい数学演習"
+      />
+    </div>
 
-  <h4>ページ番号</h4>
-  <input type="text" v-model="pageNum" placeholder="例: 12" />
+    <div class="section">
+      <div class="title">ページ番号</div>
+      <input
+        class="input-item"
+        type="text"
+        v-model="pageNum"
+        placeholder="例: 12"
+      />
+    </div>
 
-  <h4>問題番号</h4>
-  <input type="text" v-model="problemNum" placeholder="例: 3-2" />
+    <div class="section">
+      <div class="title">問題番号</div>
+      <input
+        class="input-item"
+        type="text"
+        v-model="problemNum"
+        placeholder="例: 3-2"
+      />
+    </div>
 
-  <h4>質問内容</h4>
-  <textarea v-model="contents" placeholder=""></textarea>
-  {{ contents }}
+    <div class="section">
+      <div class="title">質問内容</div>
+      <textarea class="input-item" v-model="contents" placeholder=""></textarea>
+      {{ contents }}
+
+      <input type="file" ref="preview" @change="uploadFile" />
+
+      <div v-if="url">
+        <img class="preview" :src="url" />
+      </div>
+    </div>
+
+    <router-link to="/mypage"><Button>これで質問する</Button></router-link>
+  </Container>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
+import Container from '../components/parts/Container.vue';
+import Button from '../components/parts/Button.vue';
 
 export default defineComponent({
   name: 'PostQuestionPage',
-  components: {},
+  components: { Container, Button },
   setup() {
     let selectedItem = ref({ id: 1, label: '未選択' });
     const selectItems = ref([
@@ -38,14 +75,55 @@ export default defineComponent({
     let pageNum = ref('');
     let problemNum = ref('');
     let contents = ref('');
+    let preview = ref();
 
-    return { selectedItem, selectItems, textbookName, contents };
+    let url = ref('');
+
+    const uploadFile = (preview: any) => {
+      console.log('アップロード');
+      const file = preview.target.files[0];
+      url.value = URL.createObjectURL(file);
+      console.log('url=', url.value);
+    };
+
+    onMounted(() => {
+      console.log(preview);
+    });
+
+    return {
+      selectedItem,
+      selectItems,
+      textbookName,
+      contents,
+      preview,
+      url,
+      uploadFile,
+    };
   },
 });
 </script>
 
-<style lang="css">
+<style lang="scss">
 h4 {
   margin-bottom: 0px;
+}
+
+.section {
+  margin-bottom: 20px;
+
+  .title {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .input-item {
+    width: 80vw;
+    max-width: 500px;
+  }
+
+  .preview {
+    width: 80vw;
+    max-width: 500px;
+  }
 }
 </style>
