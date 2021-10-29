@@ -7,11 +7,13 @@
     </select>
     <div class="flex-container">
       <div class="item-box" v-for="question in questions" :key="question.id">
-        <div class="box-container">
-          <div class="field">{{ question.field }}</div>
-          <div class="content">{{ question.content }}</div>
-          <div class="matching-state">{{ question.matching }}</div>
-        </div>
+        <router-link to="/mypage/detail">
+          <div class="box-container">
+            <div class="field">{{ question.field }}</div>
+            <div class="content">{{ question.content }}</div>
+            <div class="matching-state">{{ question.matching }}</div>
+          </div>
+        </router-link>
       </div>
     </div>
   </Container>
@@ -69,7 +71,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sort {
   display: block;
   margin-left: auto;
@@ -122,5 +124,9 @@ export default defineComponent({
   font-size: 11px;
   margin-top: auto; // 親のflex + これで下に落とせる
   margin-left: auto; // 右に寄せる
+}
+a {
+  text-decoration: none !important;
+  color: inherit;
 }
 </style>
