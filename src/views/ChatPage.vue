@@ -5,10 +5,21 @@
 
   <div id="scroll">
     <table id="chat" align="center">
-      <tbody v-for="chat in AllChat" v-bind:key="chat.datetime">
+      <tbody id="tbody" v-for="chat in AllChat" v-bind:key="chat.datetime">
       <tr>
-        <span v-if="chat.from=='tanaka@塾講師'"><td class="you">{{ chat.contents }}</td><td></td></span>
-        <span v-if="chat.from=='花子'"><td></td><td class="me">{{ chat.contents }}</td></span></tr>
+        <span v-if="chat.from=='tanaka@塾講師'">
+          <td class="you">
+            <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
+            <span v-else>{{ chat.contents }}</span>
+          </td><td></td>
+        </span>
+        <span v-if="chat.from=='花子'">
+          <td></td><td class="me">
+          <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
+          <span v-else>{{ chat.contents }}</span>
+        </td>
+        </span>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -21,8 +32,9 @@
   <br><br>
 
   <form>
-    <textarea v-model="message" placeholder="ここにコメントを入力"></textarea><br>
-    <input type="submit" value="コメントを送信">
+    <input type="file" id="file" accept="video/mp4"/><br>
+    <textarea v-model="message" id="comment" placeholder="ここにコメントを入力"></textarea><br>
+    <input type="button" v-on:click="this.send()" value="コメントを送信"/>
   </form>
 </template>
 
@@ -58,18 +70,74 @@ export default {
     // 一番下までスクロール
     let el = document.getElementById('scroll');
     el.scrollTo(0,el.scrollHeight)
+
+    let table = document.getElementById('chat');
+    let tr = table.getElementsByTagName('tr');
+    for(let i=0; i<tr.length; i++){
+      let video = tr[i].getElementsByTagName('video');
+      if(video.length>0){
+        await firebase.storage().ref('mp4/'+this.AllChat[i].id+".mp4")
+            .getDownloadURL()
+            .then(res => {
+          console.log(res)
+          video[0].src = res
+        })
+      }
+    }
   },
+
+  methods:{
+    async send() {
+      let comment = document.getElementById('comment');
+      let file = document.getElementById('file');
+
+      const messages = firebase.firestore().collection('messages');
+
+      let id;
+
+      await messages.add({
+        id: null,
+        contents: file.files.length == 0 ? comment.value : "@mp4",
+        from: "花子",
+        to: "tanaka@塾講師",
+        question: "questions/LCZYgHU7ARN79q8nGxpm",
+        datetime: firebase.firestore.Timestamp.fromDate(new Date)
+      }).then(doc => {
+        messages.doc(doc.id).update({
+          id: doc.id
+        })
+
+        id = doc.id
+      }).catch(error => {
+        console.log(error)
+      })
+
+      if(file.files.length > 0) {
+        await firebase.storage().ref("mp4/" + id+ ".mp4")
+            .put(file.files[0])
+            .then(() => {
+              console.log('uploaded file')
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      }
+
+      this.$router.go({path: '/chat', force: true})
+    },
+  }
 }
 </script>
 
 <style scoped>
 *{
   margin-bottom: 5px;
+  text-align: center;
 }
 
 textarea {
   resize: none;
-  width:410px;
+  width:300px;
   height:100px;
 }
 
@@ -100,5 +168,9 @@ td.you{
 
 td,th{
   width: 200px;
+}
+
+video {
+  width: 100%;
 }
 </style>
