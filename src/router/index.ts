@@ -4,7 +4,7 @@ import Home from '../views/Home.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
+    name: 'TopPage',
     component: Home,
   },
   {
@@ -15,6 +15,31 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  },
+  {
+    path: '/post',
+    name: '質問投稿',
+    component: () => import('../views/PostQuestionPage.vue'),
+  },
+  {
+    path: '/list',
+    name: '質問一覧',
+    component: () => import('../views/QuestionList.vue'),
+  },
+  {
+    path: '/mypage',
+    name: 'マイページ',
+    component: () => import('../views/MyPage.vue'),
+  },
+  {
+    path: '/mypage/detail',
+    name: '自分の質問詳細',
+    component: () => import('../views/MyDetailPage.vue'),
+  },
+  {
+    path: '/detail',
+    name: '質問詳細',
+    component: () => import('../views/DetailPage.vue'),
   },
   {
     path: '/chat',
