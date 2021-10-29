@@ -22,18 +22,15 @@
       <div>質問内容：</div>
       <div>{{ question.content }}</div>
     </div>
-
-    <router-link to="/chat"><Button>この質問に回答する</Button></router-link>
   </Container>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Container from '../components/parts/Container.vue';
-import Button from '../components/parts/Button.vue';
 
 export default defineComponent({
-  name: 'DetailPage',
+  name: 'MyDetailPage',
   components: { Container },
   setup() {
     const question = ref({

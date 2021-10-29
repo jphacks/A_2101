@@ -13,7 +13,7 @@
       <input
         class="input-item"
         type="text"
-        v-model="textbookName"
+        v-model="textbook"
         placeholder="例: 楽しい数学演習"
       />
     </div>
@@ -29,18 +29,12 @@
     </div>
 
     <div class="section">
-      <div class="title">問題番号</div>
-      <input
-        class="input-item"
-        type="text"
-        v-model="problemNum"
-        placeholder="例: 3-2"
-      />
-    </div>
-
-    <div class="section">
       <div class="title">質問内容</div>
-      <textarea class="input-item" v-model="contents" placeholder=""></textarea>
+      <textarea
+        class="input-item"
+        v-model="contents"
+        placeholder="問3-1の〇〇がなぜXXになるのかわかりません"
+      ></textarea>
       {{ contents }}
 
       <input type="file" ref="preview" @change="uploadFile" />
@@ -71,9 +65,8 @@ export default defineComponent({
       { id: 4, label: '三角関数' },
       { id: 5, label: 'ベクトル' },
     ]);
-    let textbookName = ref('');
+    let textbook = ref('');
     let pageNum = ref('');
-    let problemNum = ref('');
     let contents = ref('');
     let preview = ref();
 
@@ -93,7 +86,8 @@ export default defineComponent({
     return {
       selectedItem,
       selectItems,
-      textbookName,
+      textbook,
+      pageNum,
       contents,
       preview,
       url,
