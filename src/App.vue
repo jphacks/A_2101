@@ -1,7 +1,20 @@
 <template>
+  <Header />
   <router-view />
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Header from './components/parts/Header.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: { Header },
+  setup() {
+    return {};
+  },
+});
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
