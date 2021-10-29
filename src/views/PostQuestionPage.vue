@@ -2,7 +2,7 @@
   <Container>
     <div class="section">
       <div class="title">分野</div>
-      <select class="input-item" v-model="selectedItem">
+      <select class="input-item" v-model="question.field">
         <option v-for="item in selectItems" :value="item" :key="item.id">
           {{ item.label }}
         </option>
@@ -13,7 +13,7 @@
       <input
         class="input-item"
         type="text"
-        v-model="textbookName"
+        v-model="question.textbook"
         placeholder="例: 楽しい数学演習"
       />
     </div>
@@ -23,30 +23,24 @@
       <input
         class="input-item"
         type="text"
-        v-model="pageNum"
+        v-model="question.pageNum"
         placeholder="例: 12"
       />
     </div>
 
     <div class="section">
-      <div class="title">問題番号</div>
-      <input
-        class="input-item"
-        type="text"
-        v-model="problemNum"
-        placeholder="例: 3-2"
-      />
-    </div>
-
-    <div class="section">
       <div class="title">質問内容</div>
-      <textarea class="input-item" v-model="contents" placeholder=""></textarea>
+      <textarea
+        class="input-item"
+        v-model="question.contents"
+        placeholder="問3-1の〇〇がなぜXXになるのかわかりません"
+      ></textarea>
       {{ contents }}
 
       <input type="file" ref="preview" @change="uploadFile" />
 
-      <div v-if="url">
-        <img class="preview" :src="url" />
+      <div v-if="question.url">
+        <img class="preview" :src="question.url" />
       </div>
     </div>
 
@@ -63,7 +57,6 @@ export default defineComponent({
   name: 'PostQuestionPage',
   components: { Container, Button },
   setup() {
-    let selectedItem = ref({ id: 1, label: '未選択' });
     const selectItems = ref([
       { id: 1, label: '未選択' },
       { id: 2, label: '場合の数と確率' },
@@ -71,19 +64,20 @@ export default defineComponent({
       { id: 4, label: '三角関数' },
       { id: 5, label: 'ベクトル' },
     ]);
-    let textbookName = ref('');
-    let pageNum = ref('');
-    let problemNum = ref('');
-    let contents = ref('');
+
     let preview = ref();
 
-    let url = ref('');
+    const question = ref({
+      field: { id: 1, label: '未選択' },
+      textbook: '',
+      pageNum: '',
+      content: '',
+      url: '',
+    });
 
     const uploadFile = (preview: any) => {
-      console.log('アップロード');
       const file = preview.target.files[0];
-      url.value = URL.createObjectURL(file);
-      console.log('url=', url.value);
+      question.value.url = URL.createObjectURL(file);
     };
 
     onMounted(() => {
@@ -91,12 +85,9 @@ export default defineComponent({
     });
 
     return {
-      selectedItem,
       selectItems,
-      textbookName,
-      contents,
       preview,
-      url,
+      question,
       uploadFile,
     };
   },
