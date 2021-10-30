@@ -41,6 +41,16 @@ const routes: Array<RouteRecordRaw> = [
     name: '質問詳細',
     component: () => import('../views/DetailPage.vue'),
   },
+  {
+    path: '/chat',
+    name: 'チャット',
+    component: () => import('../views/ChatPage.vue'),
+  },
+  {
+    path: '/chat_teacher',
+    name: ' チャット ',
+    component: () => import('../views/ChatPageForTeacher.vue'),
+  },
 ];
 
 const router = createRouter({
