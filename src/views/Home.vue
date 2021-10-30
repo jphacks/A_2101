@@ -1,7 +1,7 @@
 <template>
   <Container>
     <div class="sub-container">
-      <div class="title">MathMathch</div>
+      <div class="title">MathMatch</div>
       <router-link to="/mypage">
         <Button class="btn">教わる！</Button>
       </router-link>
