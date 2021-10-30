@@ -8,13 +8,13 @@
     <table id="chat" align="center">
       <tbody id="tbody" v-for="chat in AllChat" v-bind:key="chat.datetime">
       <tr>
-        <span v-if="chat.from=='tanaka@塾講師'">
+        <span v-if="chat.from=='花子'">
           <td class="you">
             <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
             <span v-else>{{ chat.contents }}</span>
           </td><td></td>
         </span>
-        <span v-if="chat.from=='花子'">
+        <span v-if="chat.from=='tanaka@塾講師'">
           <td></td><td class="me">
           <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
           <span v-else>{{ chat.contents }}</span>
@@ -27,12 +27,13 @@
 
   <table id="namespace" align="center">
     <tr>
-      <th>tanaka@塾講師</th><th>花子</th>
+      <th>花子</th><th>tanaka@塾講師</th>
     </tr>
   </table>
   <br><br>
 
   <form>
+    <input type="file" id="file" accept="video/mp4"/><br>
     <textarea v-model="message" id="comment" placeholder="ここにコメントを入力"></textarea><br>
     <input type="button" v-on:click="this.send()" value="コメントを送信"/>
   </form>
@@ -42,7 +43,7 @@
 import firebase from '../firebase'
 
 export default {
-  name: "ChatPage",
+  name: "ChatPageForTeacher",
 
   data(){
     return{
@@ -89,6 +90,7 @@ export default {
   methods:{
     async send() {
       let comment = document.getElementById('comment');
+      let file = document.getElementById('file');
 
       const messages = firebase.firestore().collection('messages');
 
@@ -96,9 +98,9 @@ export default {
 
       await messages.add({
         id: null,
-        contents: comment.value,
-        from: "花子",
-        to: "tanaka@塾講師",
+        contents: file.files.length == 0 ? comment.value : "@mp4",
+        from: "tanaka@塾講師",
+        to: "花子",
         question: "questions/LCZYgHU7ARN79q8nGxpm",
         datetime: firebase.firestore.Timestamp.fromDate(new Date)
       }).then(doc => {
@@ -110,6 +112,17 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+
+      if(file.files.length > 0) {
+        await firebase.storage().ref("mp4/" + id+ ".mp4")
+            .put(file.files[0])
+            .then(() => {
+              console.log('uploaded file')
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      }
 
       this.$router.go({path: '/chat', force: true})
     },

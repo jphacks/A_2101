@@ -1,5 +1,8 @@
 <template>
   <Container>
+    <router-link to="/mypage">
+      <input type="button" id="back" value="戻る"/>
+    </router-link>
     <div class="section">
       <div class="title">分野</div>
       <select class="input-item" v-model="question.field">
