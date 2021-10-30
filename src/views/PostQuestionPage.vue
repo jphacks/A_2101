@@ -47,7 +47,9 @@
       </div>
     </div>
 
-    <router-link to="/mypage"><Button>これで質問する</Button></router-link>
+    <router-link to="/mypage"
+      ><Button class="btn">これで質問する</Button></router-link
+    >
   </Container>
 </template>
 
@@ -118,6 +120,9 @@ h4 {
   .preview {
     width: 80vw;
     max-width: 500px;
+  }
+  .btn {
+    /* width: 330px; */
   }
 }
 </style>

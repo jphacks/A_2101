@@ -28,17 +28,20 @@
       <div>{{ question.content }}</div>
     </div>
 
-    <router-link to="/chat"><Button>回答を見る</Button></router-link>
+    <router-link to="/chat"
+      ><Button class="btn">回答を見る</Button></router-link
+    >
   </Container>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Container from '../components/parts/Container.vue';
+import Button from '../components/parts/Button.vue';
 
 export default defineComponent({
   name: 'MyDetailPage',
-  components: { Container },
+  components: { Container, Button },
   setup() {
     const question = ref({
       id: 1,
@@ -55,5 +58,9 @@ export default defineComponent({
 .content {
   background: #cfcfcf;
   margin-bottom: 20px;
+}
+.btn {
+  height: 40px;
+  margin: 0 auto;
 }
 </style>
