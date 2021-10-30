@@ -48,7 +48,7 @@
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
 * チャット画面作成と、動画投稿、閲覧
-* 
+* https://mathmatch-e64b3.web.app/chat_teacher
 
 
 
