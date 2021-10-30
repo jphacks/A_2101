@@ -1,7 +1,7 @@
 <template>
   <Container>
     <router-link to="/">
-      <input type="button" id="back" value="戻る"/>
+      <input type="button" id="back" value="戻る" />
     </router-link>
 
     <select class="sort" v-model="selectedItem">
@@ -22,7 +22,7 @@
     </div>
 
     <router-link to="/post">
-      <input type="button" id="back" value="問題を投稿する"/>
+      <input type="button" id="back" value="問題を投稿する" />
     </router-link>
   </Container>
 </template>

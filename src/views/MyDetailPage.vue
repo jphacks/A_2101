@@ -1,9 +1,9 @@
 <template>
   <Container>
     <router-link to="/mypage">
-      <input type="button" id="back" value="戻る"/>
+      <input type="button" id="back" value="戻る" />
     </router-link>
-    <br><br>
+    <br /><br />
 
     <div>
       <div>分野：</div>

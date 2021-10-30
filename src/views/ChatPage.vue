@@ -1,92 +1,109 @@
 <template>
   <router-link to="/detail">
-    <input type="button" id="back" value="戻る"/>
+    <input type="button" id="back" value="戻る" />
   </router-link>
-  <br><br>
+  <br /><br />
 
   <div id="scroll">
     <table id="chat" align="center">
       <tbody id="tbody" v-for="chat in AllChat" v-bind:key="chat.datetime">
-      <tr>
-        <span v-if="chat.from=='tanaka@塾講師'">
-          <td class="you">
-            <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
-            <span v-else>{{ chat.contents }}</span>
-          </td><td></td>
-        </span>
-        <span v-if="chat.from=='花子'">
-          <td></td><td class="me">
-          <span v-if="chat.contents=='@mp4'"><video type="video/mp4" controls></video></span>
-          <span v-else>{{ chat.contents }}</span>
-        </td>
-        </span>
-      </tr>
+        <tr>
+          <span v-if="chat.from == 'tanaka@塾講師'">
+            <td class="you">
+              <span v-if="chat.contents == '@mp4'"
+                ><video type="video/mp4" controls></video
+              ></span>
+              <span v-else>{{ chat.contents }}</span>
+            </td>
+            <td></td>
+          </span>
+          <span v-if="chat.from == '花子'">
+            <td></td>
+            <td class="me">
+              <span v-if="chat.contents == '@mp4'"
+                ><video type="video/mp4" controls></video
+              ></span>
+              <span v-else>{{ chat.contents }}</span>
+            </td>
+          </span>
+        </tr>
       </tbody>
     </table>
   </div>
 
   <table id="namespace" align="center">
     <tr>
-      <th>tanaka@塾講師</th><th>花子</th>
+      <th>tanaka@塾講師</th>
+      <th>花子</th>
     </tr>
   </table>
-  <br><br>
+  <br /><br />
 
   <form>
-    <textarea v-model="message" id="comment" placeholder="ここにコメントを入力"></textarea><br>
-    <input type="button" v-on:click="this.send()" value="コメントを送信"/>
+    <textarea
+      v-model="message"
+      id="comment"
+      placeholder="ここにコメントを入力"
+    ></textarea
+    ><br />
+    <input type="button" v-on:click="this.send()" value="コメントを送信" />
   </form>
 </template>
 
 <script>
-import firebase from '../firebase'
+import firebase from '../firebase';
 
 export default {
-  name: "ChatPage",
+  name: 'ChatPage',
 
-  data(){
-    return{
+  data() {
+    return {
       AllChat: [],
-    }
+    };
   },
 
-  async mounted(){
-    this.AllChat = []
+  async mounted() {
+    this.AllChat = [];
 
     // firebaseからチャットデータを取得
     // 日付順にソート
-    await firebase.firestore()
-        .collection('messages').orderBy("datetime")
-        .get(
-    ).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        this.AllChat.push(doc.data())
+    await firebase
+      .firestore()
+      .collection('messages')
+      .orderBy('datetime')
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.AllChat.push(doc.data());
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.AllChat = [];
       });
-    }).catch((error) => {
-      console.log(error);
-      this.AllChat = [];
-    });
 
     // 一番下までスクロール
     let el = document.getElementById('scroll');
-    el.scrollTo(0,el.scrollHeight)
+    el.scrollTo(0, el.scrollHeight);
 
     let table = document.getElementById('chat');
     let tr = table.getElementsByTagName('tr');
-    for(let i=0; i<tr.length; i++){
+    for (let i = 0; i < tr.length; i++) {
       let video = tr[i].getElementsByTagName('video');
-      if(video.length>0){
-        await firebase.storage().ref('mp4/'+this.AllChat[i].id+".mp4")
-            .getDownloadURL()
-            .then(res => {
-          console.log(res)
-          video[0].src = res
-        })
+      if (video.length > 0) {
+        await firebase
+          .storage()
+          .ref('mp4/' + this.AllChat[i].id + '.mp4')
+          .getDownloadURL()
+          .then((res) => {
+            console.log(res);
+            video[0].src = res;
+          });
       }
     }
   },
 
-  methods:{
+  methods: {
     async send() {
       let comment = document.getElementById('comment');
 
@@ -94,42 +111,45 @@ export default {
 
       let id;
 
-      await messages.add({
-        id: null,
-        contents: comment.value,
-        from: "花子",
-        to: "tanaka@塾講師",
-        question: "questions/LCZYgHU7ARN79q8nGxpm",
-        datetime: firebase.firestore.Timestamp.fromDate(new Date)
-      }).then(doc => {
-        messages.doc(doc.id).update({
-          id: doc.id
+      await messages
+        .add({
+          id: null,
+          contents: comment.value,
+          from: '花子',
+          to: 'tanaka@塾講師',
+          question: 'questions/LCZYgHU7ARN79q8nGxpm',
+          datetime: firebase.firestore.Timestamp.fromDate(new Date()),
         })
+        .then((doc) => {
+          messages.doc(doc.id).update({
+            id: doc.id,
+          });
 
-        id = doc.id
-      }).catch(error => {
-        console.log(error)
-      })
+          id = doc.id;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-      this.$router.go({path: '/chat', force: true})
+      this.$router.go({ path: '/chat', force: true });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-*{
+* {
   margin-bottom: 5px;
   text-align: center;
 }
 
 textarea {
   resize: none;
-  width:300px;
-  height:100px;
+  width: 300px;
+  height: 100px;
 }
 
-#scroll{
+#scroll {
   margin-left: auto;
   margin-right: auto;
   width: 410px;
@@ -140,21 +160,22 @@ textarea {
   overflow-y: scroll;
 }
 
-#namespace{
+#namespace {
   border: solid;
   border-color: black;
   border-width: 1px;
 }
 
-td.me{
+td.me {
   background-color: lightblue;
 }
 
-td.you{
+td.you {
   background-color: lightpink;
 }
 
-td,th{
+td,
+th {
   width: 200px;
 }
 

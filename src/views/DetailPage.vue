@@ -1,9 +1,9 @@
 <template>
   <Container>
     <router-link to="/">
-      <input type="button" id="back" value="戻る"/>
+      <input type="button" id="back" value="戻る" />
     </router-link>
-    <br><br>
+    <br /><br />
 
     <div>
       <div>分野：</div>
@@ -28,7 +28,9 @@
       <div>{{ question.content }}</div>
     </div>
 
-    <router-link to="/chat_teacher"><Button>この質問に回答する</Button></router-link>
+    <router-link to="/chat_teacher"
+      ><Button>この質問に回答する</Button></router-link
+    >
   </Container>
 </template>
 
