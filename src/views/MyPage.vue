@@ -1,5 +1,9 @@
 <template>
   <Container>
+    <router-link to="/">
+      <input type="button" id="back" value="戻る"/>
+    </router-link>
+
     <select class="sort" v-model="selectedItem">
       <option v-for="item in selectItems" :value="item" :key="item.id">
         {{ item.label }}
@@ -16,6 +20,10 @@
         </router-link>
       </div>
     </div>
+
+    <router-link to="/post">
+      <input type="button" id="back" value="問題を投稿する"/>
+    </router-link>
   </Container>
 </template>
 
