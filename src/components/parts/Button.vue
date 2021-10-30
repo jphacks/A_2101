@@ -1,5 +1,7 @@
 <template>
-  <button><slot></slot></button>
+  <div class="box">
+    <div class="text"><slot></slot></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -14,4 +16,18 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.box {
+  color: white;
+  font-weight: bold;
+  background: #0018f6;
+  /* width: 190px;
+  height: 40px; */
+  line-height: 40px;
+  text-align: center;
+  border-radius: 5px;
+}
+.text {
+  margin: 0 auto;
+}
+</style>
