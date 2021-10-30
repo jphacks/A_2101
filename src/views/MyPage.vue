@@ -1,7 +1,7 @@
 <template>
   <Container>
     <router-link to="/">
-      <input type="button" id="back" value="戻る"/>
+      <input type="button" id="back" value="戻る" />
     </router-link>
 
     <select class="sort" v-model="selectedItem">
@@ -22,7 +22,7 @@
     </div>
 
     <router-link to="/post">
-      <input type="button" id="back" value="問題を投稿する"/>
+      <Button class="btn">問題を投稿する</Button>
     </router-link>
   </Container>
 </template>
@@ -30,10 +30,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Container from '../components/parts/Container.vue';
+import Button from '../components/parts/Button.vue';
 
 export default defineComponent({
   name: 'MyPage',
-  components: { Container },
+  components: { Container, Button },
   setup() {
     let selectedItem = ref({ id: 1, label: '新しい順' });
     const selectItems = ref([
@@ -85,6 +86,11 @@ export default defineComponent({
   margin-left: auto;
   margin-bottom: 10px;
 }
+.btn {
+  width: 267px;
+  height: 40px;
+  margin: 0 auto;
+}
 
 .flex-container {
   display: flex;
@@ -93,6 +99,7 @@ export default defineComponent({
   flex-wrap: wrap; /*複数行に対応するようになる*/
   gap: 15px 15px;
   justify-content: center;
+  margin-bottom: 50px;
 }
 .item-box {
   width: 125px;
